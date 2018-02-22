@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Select, message, Button, Row, Col } from 'antd';
 
-import { SKU, SKUItem, SKUTree } from '../types';
+import { SKU, SKUItem, SKUTree, BasicItem } from '../types';
 
 type SKUGroupProps = {
   index: number,
@@ -9,6 +9,9 @@ type SKUGroupProps = {
   skuTree: SKUTree,
   onSKUChange: (skuItem: SKUItem, index: number) => void,
   onSKUDelete: () => void;
+  onFetchSKU: (groupName: string) => Promise<Array<BasicItem>>,
+  onCreateGroup: (groupName: string) => Promise<string>,
+  onCreateSKU: (SKUName: string) => Promise<string>,
 };
 
 type SKUGroupState = {
@@ -43,12 +46,22 @@ class SKUGroup extends React.Component<SKUGroupProps, SKUGroupState> {
     }
   }
   
-  createSKU = (text: string): SKUItem => {
-    return {
-      id: '',
-      text: '',
-      leaf: [],
-    };
+  createSKU = (SKUName: string) => {
+    this.props.onCreateSKU(SKUName).then(id => {
+      const { index } = this.props;
+      const sku = {
+        id,
+        text: SKUName,
+        leaf: [],
+      };
+      this.props.onSKUChange(sku, index);
+    });
+  }
+
+  handleSKULeafChange = (leaf: Array<BasicItem>) => {
+    const { sku, index, onSKUChange } = this.props;
+    sku.leaf = leaf;
+    onSKUChange(sku, index);
   }
 
   render() {

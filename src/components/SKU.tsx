@@ -3,13 +3,17 @@ import { Button } from 'antd';
 
 import SKUGroup from './SkuGroup';
 
-import { SKU, SKUTree, SKUItem } from '../types';
+import { SKU, SKUTree, SKUItem, BasicItem } from '../types';
 
 export type SKUSelectProps = {
-  onChange: (data: SKU) => void,
   maxSize: number,
   value: SKU,
   skuTree: SKUTree,
+  onChange: (data: SKU) => void,
+  onFetchGroup: () => Promise<Array<BasicItem>>,
+  onFetchSKU: (groupName: string) => Promise<Array<BasicItem>>,
+  onCreateGroup: (groupName: string) => Promise<string>,
+  onCreateSKU: (SKUName: string) => Promise<string>,
 };
 
 export type SKUSelectState = {
@@ -26,9 +30,16 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
     };
   }
 
+  componentDidMount() {
+    this.props.onFetchGroup().then(skuTree => {
+      this.setState({
+        skuTree: skuTree,
+      });
+    });
+  }
+
   componentWillReceiveProps(nextProps: SKUSelectProps) {
     this.setState({
-      skuTree: nextProps.skuTree,
       data: nextProps.value,
     });
   }
@@ -88,6 +99,9 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
             skuTree={skuTree}
             onSKUChange={this.rebuildSKU}
             onSKUDelete={this.delSku.bind(this, index)}
+            onCreateGroup={this.props.onCreateGroup}
+            onCreateSKU={this.props.onCreateSKU}
+            onFetchSKU={this.props.onFetchSKU}
           />
         ))}
         {data.length < maxSize && (

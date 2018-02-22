@@ -6,7 +6,7 @@ export type BasicItem = {
 export type SKUItem = {
   id: string | number,
   text: string,
-  leaf: Array<BasicItem>,
+  leaf?: Array<BasicItem>,
 };
 
 export type SKU = Array<SKUItem>;
