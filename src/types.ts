@@ -9,5 +9,5 @@ export type SKUItem = {
   leaf?: Array<BasicItem>,
 };
 
-export type SKU = Array<SKUItem>;
-export type SKUTree = Array<SKUItem>;
+export type SKUValue = Array<SKUItem>;
+export type SKUTree = Array<BasicItem>;

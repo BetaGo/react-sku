@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { Button } from 'antd';
 
-import SKUGroup from './SkuGroup';
+import SKUGroup from './SKUGroup';
 
-import { SKU, SKUTree, SKUItem, BasicItem } from '../types';
+import { SKUValue, SKUTree, SKUItem, BasicItem } from '../types';
 
 export type SKUSelectProps = {
-  maxSize: number,
-  value: SKU,
+  maxSize?: number,
+  value: SKUValue,
   skuTree: SKUTree,
-  onChange: (data: SKU) => void,
+  onChange: (data: SKUValue) => void,
   onFetchGroup: () => Promise<Array<BasicItem>>,
   onFetchSKU: (groupName: string) => Promise<Array<BasicItem>>,
-  onCreateGroup: (groupName: string) => Promise<string>,
-  onCreateSKU: (SKUName: string) => Promise<string>,
+  onCreateGroup: (groupName: string) => Promise<BasicItem>,
+  onCreateSKU: (SKUName: string) => Promise<BasicItem>,
 };
 
 export type SKUSelectState = {
-  data: SKU,
+  data: SKUValue,
   skuTree: SKUTree,
 };
 
@@ -44,12 +44,12 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
     });
   }
 
-  addSKU = () => {
+  handleAddSKU = () => {
     const { data } = this.state;
     const newData = [
       ...data,
       {
-        id: -1,
+        id: '',
         text: '',
         leaf: [],
       }
@@ -78,16 +78,17 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
     this.props.onChange(data);
   }
 
-  delSku = (index: number) => {
+  handleDelSku = (index: number) => {
     const { data } = this.state;
     const newData = data.filter((item, idx) => idx !== index);
     this.setState({
       data: newData,
     });
+    this.props.onChange(newData);
   }
 
   render() {
-    const { maxSize } = this.props;
+    const { maxSize = 3 } = this.props;
     const { skuTree, data } = this.state;
     return (
       <div>
@@ -95,24 +96,24 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
           <SKUGroup
             key={index}
             index={index}
-            sku={item}
+            skuItem={item}
             skuTree={skuTree}
+            selectedSKU={data}
             onSKUChange={this.rebuildSKU}
-            onSKUDelete={this.delSku.bind(this, index)}
+            onSKUDelete={() => this.handleDelSku(index)}
             onCreateGroup={this.props.onCreateGroup}
             onCreateSKU={this.props.onCreateSKU}
             onFetchSKU={this.props.onFetchSKU}
           />
         ))}
         {data.length < maxSize && (
-          <Button onClick={this.addSKU}>
+          <Button onClick={this.handleAddSKU}>
             添加规格
           </Button>
         )}
       </div>
     );
   }
-
 }
 
 export default SKUSelect;
