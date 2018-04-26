@@ -178,8 +178,9 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
     const { newSKUIndex, newSKUText } = this.state;
 
     return leaf.map((sku, index) => (
-      <div key={index}>
+      <div key={index} className="_box">
         <Select
+          style={{ width: 180 }}
           mode="combobox"
           value={newSKUIndex === index ? newSKUText : sku.text}
           onChange={(value: string) => this.handleSKUChange(value, index)}
@@ -204,7 +205,7 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
       return null;
     }
     return (
-      <div>
+      <div className="c-sku">
         {this.renderSKUValues()}
         <a onClick={this.handleAddSKU}>添加规格值</a>
       </div>

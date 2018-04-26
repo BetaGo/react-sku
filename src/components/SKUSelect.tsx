@@ -5,6 +5,8 @@ import SKUGroup from './SKUGroup';
 
 import { SKUValue, SKUTree, SKUItem, BasicItem } from '../types';
 
+import './Style.css';
+
 export type SKUSelectProps = {
   maxSize?: number,
   value: SKUValue,
@@ -61,12 +63,8 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
 
   rebuildSKU = (skuItem: SKUItem, index: number) => {
     const { data, skuTree } = this.state;
-    if (data[index]) {
-      data[index] = skuItem;
-    } else {
-      data.push(skuItem);
-    }
-    if (!skuTree.some(item => item.id === skuItem.id)) {
+    data[index] = skuItem;
+    if (skuItem.id && !skuTree.some(item => item.id === skuItem.id)) {
       skuTree.push(skuItem);
       this.setState({
         skuTree: [...skuTree],
@@ -94,7 +92,7 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
       <div>
         {data.map((item, index) => (
           <SKUGroup
-            key={index}
+            key={item.id || index}
             index={index}
             skuItem={item}
             skuTree={skuTree}

@@ -9,9 +9,9 @@
     "react-scripts-ts": "2.15.1"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "start": "react-app-rewired start --scripts-version react-scripts-ts",
+    "build": "react-app-rewired build --scripts-version react-scripts-ts",
+    "test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
@@ -19,6 +19,8 @@
     "@types/node": "^9.6.6",
     "@types/react": "^16.3.12",
     "@types/react-dom": "^16.0.5",
+    "babel-plugin-import": "^1.7.0",
+    "react-app-rewired": "^1.5.2",
     "typescript": "^2.8.3"
   }
 }

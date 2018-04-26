@@ -1,0 +1,29 @@
+.c-sku ._box {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.c-sku ._box:hover ._badge {
+    opacity: 1;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.c-sku ._badge {
+    display: block;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%;
+    color: #ddd;
+    background: rgba(0, 0, 0, 0.5);
+    transform: translate(40%, -30%);
+    transition: cubic-bezier(0.165, 0.84, 0.44, 1) 0.5s;
+    z-index: 1;
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Select, message, Button, Row, Col } from 'antd';
+import { Select, Row, Col } from 'antd';
 
-import { SKUValue, SKUItem, SKUTree, BasicItem } from '../types';
+import { SKUItem, SKUTree, BasicItem } from '../types';
 
 import SKUContainer from './SKUContainer';
 
@@ -106,6 +106,7 @@ class SKUGroup extends React.Component<SKUGroupProps, SKUGroupState> {
           <Col span={2}>规格名</Col>
           <Col span={22}>
             <Select
+              style={{ width: 180, marginRight: 20 }}
               mode="combobox"
               onChange={this.handleSelectChange}
               onBlur={this.handleOnBlur}
