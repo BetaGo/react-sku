@@ -5,7 +5,11 @@ import { SKUValue } from './types';
 
 import { onCreateGroup, onCreateSKU, onFetchGroup, onFetchSKU } from './utils/fakeAPI';
 // const initialValue: SKUValue = []; 
-class App extends React.Component {
+
+type AppState = {
+  skuValue: SKUValue,
+};
+class App extends React.Component<{}, AppState> {
   state = {
     skuValue: [],
   };
@@ -21,7 +25,6 @@ class App extends React.Component {
       <div>
         <SKUSelect
           value={skuValue}
-          skuTree={[]}
           onChange={this.handleChange}
           onFetchGroup={onFetchGroup}
           onFetchSKU={onFetchSKU}

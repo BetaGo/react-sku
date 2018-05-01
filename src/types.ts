@@ -1,11 +1,11 @@
 export type BasicItem = {
-  id: string | number,
-  text: string,
+  id?: number,
+  text?: string,
 };
 
 export type SKUItem = {
-  id: string | number,
-  text: string,
+  id?: number,
+  text?: string,
   leaf?: Array<BasicItem>,
 };
 

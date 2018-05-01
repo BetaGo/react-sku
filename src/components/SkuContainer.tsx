@@ -7,13 +7,13 @@ const { Option } = Select;
 
 type SKUContainerProps = {
   skuItem: SKUItem,
-  onFetchSKU: (groupId: string | number) => Promise<Array<BasicItem>>,
-  onCreateSKU: (SKUName: string) => Promise<BasicItem>,
+  onFetchSKU: (groupId: number) => Promise<Array<BasicItem>>,
+  onCreateSKU: (SKUName: string, groupId: number) => Promise<BasicItem>,
   onSKULeafChange: (leaf: Array<BasicItem>) => void,
 };
 
 type SKUContainerState = {
-  id: string | number,
+  id?: number,
   newSKUIndex?: number,
   newSKUText?: string,
   skuOptions: Array<BasicItem>,
@@ -23,7 +23,7 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
   constructor(props: SKUContainerProps) {
     super(props);
     this.state = {
-      id: '',
+      id: undefined,
       skuOptions: [],
     };
   }
@@ -59,8 +59,8 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
     const { leaf = [] } = skuItem;
 
     const { skuOptions } = this.state;
-
-    this.props.onCreateSKU(name)
+    if (skuItem.id) {
+      this.props.onCreateSKU(name, skuItem.id)
       .then(item => {
         this.setState({
           skuOptions: [
@@ -71,7 +71,7 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
         leaf[index] = item;
         this.props.onSKULeafChange(leaf);
       });
-
+    }
   }
 
   handleSKUChange = (value: string, index: number) => {
@@ -107,7 +107,7 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
     }
 
     if (!newSKUText) {
-      const item = { id: '', text: ''};
+      const item = { id: undefined, text: ''};
       leaf[index] = item;
       this.props.onSKULeafChange(leaf);
       return;
@@ -142,8 +142,8 @@ class SKUContainer extends React.Component<SKUContainerProps, SKUContainerState>
     const { skuItem } = this.props;
     const { leaf = [] } = skuItem;
     leaf.push({
-      id: '',
-      text: '',
+      id: undefined,
+      text: undefined,
     });
     this.props.onSKULeafChange(leaf);
   }

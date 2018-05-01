@@ -14,9 +14,9 @@ type SKUGroupProps = {
   selectedSKU: Array<SKUItem>,
   onSKUChange: (skuItem: SKUItem, index: number) => void,
   onSKUDelete: () => void;
-  onFetchSKU: (groupName: string) => Promise<Array<BasicItem>>,
+  onFetchSKU: (groupId: number) => Promise<Array<BasicItem>>,
   onCreateGroup: (groupName: string) => Promise<BasicItem>,
-  onCreateSKU: (SKUName: string) => Promise<BasicItem>,
+  onCreateSKU: (SKUName: string, groupId: number) => Promise<BasicItem>,
 };
 
 type SKUGroupState = {
@@ -55,7 +55,7 @@ class SKUGroup extends React.Component<SKUGroupProps, SKUGroupState> {
 
     if (!selectedSKUText) {
       const emptySKU: SKUItem = {
-        id: '',
+        id: undefined, 
         text: '',
         leaf: [],
       };
@@ -77,10 +77,13 @@ class SKUGroup extends React.Component<SKUGroupProps, SKUGroupState> {
   }
   
   createSKU = (SKUName: string) => {
-    this.props.onCreateSKU(SKUName).then(item => {
-      const { index } = this.props;
-      this.props.onSKUChange(item, index);
-    });
+    const { skuItem } = this.props;
+    if (skuItem.id) {
+      this.props.onCreateSKU(SKUName, skuItem.id).then(item => {
+        const { index } = this.props;
+        this.props.onSKUChange(item, index);
+      });
+    }
   }
 
   handleSKULeafChange = (leaf: Array<BasicItem>) => {

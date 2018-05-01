@@ -10,12 +10,11 @@ import './Style.css';
 export type SKUSelectProps = {
   maxSize?: number,
   value: SKUValue,
-  skuTree: SKUTree,
   onChange: (data: SKUValue) => void,
   onFetchGroup: () => Promise<Array<BasicItem>>,
-  onFetchSKU: (groupName: string) => Promise<Array<BasicItem>>,
+  onFetchSKU: (groupId: number) => Promise<Array<BasicItem>>,
   onCreateGroup: (groupName: string) => Promise<BasicItem>,
-  onCreateSKU: (SKUName: string) => Promise<BasicItem>,
+  onCreateSKU: (SKUName: string, groupId: number) => Promise<BasicItem>,
 };
 
 export type SKUSelectState = {
@@ -27,7 +26,7 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
   constructor(props: SKUSelectProps) {
     super(props);
     this.state = {
-      skuTree: props.skuTree,
+      skuTree: [],
       data: props.value,
     };
   }
@@ -51,7 +50,7 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
     const newData = [
       ...data,
       {
-        id: '',
+        id: undefined, 
         text: '',
         leaf: [],
       }
