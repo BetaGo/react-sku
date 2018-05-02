@@ -91,7 +91,7 @@ class SKUSelect extends React.Component<SKUSelectProps, SKUSelectState> {
       <div>
         {data.map((item, index) => (
           <SKUGroup
-            key={item.id || index}
+            key={item.id || `key-${index}`}
             index={index}
             skuItem={item}
             skuTree={skuTree}
